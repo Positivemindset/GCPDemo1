@@ -7,7 +7,9 @@ variable "zone" {
 }
 
 variable "project_id" {
-  default = "gap-terraform-iam"
+  #default = "gap-terraform-iam"
+  default = "gcpterracloud"
+
 }
 
 # variable "gcp_zone" {
