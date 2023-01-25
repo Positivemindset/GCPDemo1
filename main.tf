@@ -81,7 +81,7 @@ resource "google_compute_instance" "default" {
   labels = {
     name  = var.instance_name
     owner = "lloyds"
-     #ttl   = "-1"
+    ttl   = "-1"
     # run   = "test"
     run ="test"
     
