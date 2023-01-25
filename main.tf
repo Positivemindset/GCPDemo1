@@ -1,45 +1,40 @@
 
-terraform {
-  #   backend "gcs" {
-  #     bucket  = "<iam-storage>"
-  #  prefix  = "terraform/state"
-  #   }
-  required_providers {
-    google = {
-      source  = "hashicorp/google"
-      version = "3.55.0"
-    }
-  }
-}
-
-
-provider "google" {
-  credentials = file("gcp_single.json")
-  project     = var.project_id
-  region      = var.region
-
-  zone = var.zone
-}
-
-# resource "google_compute_network" "vpc_network" {
-#   name = "test-network-gcp"
-
-# }
-
-# resource "google_service_account" "default" {
-#   account_id   = "gap-terraform-iam-f3c0c2f8f0f2.json"
-#   display_name = "Service Account"
-# }
 resource "google_compute_network" "vpc_network" {
-  name = "dev-work-prj-vpc"
+  name    = "gcppoc-vpc"
 }
 
-resource "google_compute_subnetwork" "public-subnetwork" {
-  name          = "dev-work-prj-sub"
-  ip_cidr_range = "10.2.0.0/16"
+
+resource "google_compute_subnetwork" "subnet" {
+  name          = "gcppoc-subnet"
+  ip_cidr_range = "10.0.1.0/24"
   region        = var.region
   network       = google_compute_network.vpc_network.name
 }
+
+
+resource "google_compute_firewall" "ssh_ingress" {
+  name    = "ssh-ingress"
+  network = google_compute_network.vpc_network.name
+
+  allow {
+    protocol = "tcp"
+    ports    = ["22"]
+  }
+
+  source_ranges = ["0.0.0.0/0"]
+}
+
+resource "google_compute_firewall" "full_egress" {
+  name    = "full-egress"
+  network = google_compute_network.vpc_network.name
+
+  allow {
+    protocol = "all"
+  }
+
+  destination_ranges = ["0.0.0.0/0"]
+}
+
 
 resource "google_compute_instance" "default" {
   name         = var.instance_name
@@ -64,7 +59,7 @@ resource "google_compute_instance" "default" {
 
   network_interface {
     network    = google_compute_network.vpc_network.name
-    subnetwork = google_compute_subnetwork.public-subnetwork.name
+    subnetwork = google_compute_subnetwork.subnet.name
 
 
     access_config {
