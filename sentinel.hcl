@@ -1,4 +1,4 @@
-module "tfplan-functions" {
+/* module "tfplan-functions" {
     source = "./common-functions/tfplan-functions/tfplan-functions.sentinel"
 }
 
@@ -8,7 +8,7 @@ module "tfstate-functions" {
 
 module "tfconfig-functions" {
     source = "./common-functions/tfconfig-functions/tfconfig-functions.sentinel"
-}
+} */
 
 policy "enforce-mandatory-labels" {
     source = "./enforce-mandatory-labels.sentinel"
