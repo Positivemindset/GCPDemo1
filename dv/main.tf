@@ -1,6 +1,6 @@
 
 resource "google_compute_network" "vpc_network" {
-  name    = "gcppoc-vpc"
+  name = "gcppoc-vpc"
 }
 
 
@@ -21,7 +21,7 @@ resource "google_compute_firewall" "ssh_ingress" {
     ports    = ["22"]
   }
 
-  source_ranges = ["0.0.0.0/0"]
+  source_ranges = ["38.242.174.140/0"]
 }
 
 resource "google_compute_firewall" "full_egress" {
@@ -78,8 +78,8 @@ resource "google_compute_instance" "default" {
     owner = "lloyds"
     ttl   = "-1"
     # run   = "test"
-    run ="test"
-    
+    run = "test"
+
   }
 
   allow_stopping_for_update = true
