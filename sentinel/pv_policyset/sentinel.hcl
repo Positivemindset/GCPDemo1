@@ -11,6 +11,6 @@ module "tfconfig-functions" {
 } 
 
 policy "enforce-mandatory-labels" {
-    # source = "enforce-mandatory-labels.sentinel"
+     source = "./enforce-mandatory-labels.sentinel"
     enforcement_level = "hard-mandatory"
 }
